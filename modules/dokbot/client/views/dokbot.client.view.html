@@ -1,0 +1,146 @@
+<style>
+    #messages{
+        margin: 0px;
+        right: 0px;
+        bottom: 30px;
+        top:50px;
+        min-height: 500px;
+        position: fixed;
+        width: inherit;
+        background: white;
+	  border-left: 1px solid #DDD;
+    }
+	#messages li{
+	border-left:none;
+	}
+    .dokbot-chat-list{
+        width: 300px;
+        right: 0px;
+        position: fixed;
+    }
+    .dokbot-input-form{
+        bottom: 0px;position: fixed;width: 270px;
+    }
+	.dokbot-input-form input{
+		font-size: 15px;
+	}
+
+
+
+    .bot-color{
+      color: #4E95BD;
+	  font-weight: bold;
+    }
+    .user-color{
+      color: #68AA4A;
+	  font-weight: bold;
+    }
+    .append-msg{
+        border-top: 0;
+    }
+    .append-msg .dokbot-icon,.append-msg .dokbot-user-name{
+        display: none;
+    }
+    .append-msg .media-body {
+        padding-left: 40px;
+    }
+	.break{
+		clear:both;
+		padding-bottom:10px;
+	}
+</style>
+<!-- The chat view -->
+<section class="container-fluid" ng-controller="DokbotController">
+
+<div class="container-fluid" >
+    <div class="row">
+        <div class="col-md-8">
+            <div ui-view></div>
+        </div>
+
+      <!--this is th epropertoes panel -->
+
+      <div class="hidden-md hidden-lg prop" ng-show="flag">
+        <div id="propertiesPanel" class="panel panel-default"  style="height: 90vh; background: #FFFFFF">
+          <div  style= "padding-top: 50px;">
+            <div class="row-fluid user-row">
+              <img class="imgstyle" src="img/profile.png" class="img-circle" alt="User Image"/>
+            </div>
+          </div>
+          <div class="panel-body">
+            <form accept-charset="UTF-8" role="form" class="form-signin">
+              <span> <strong><p id="relation" style="font-size: 12px;  font-style: italic;  text-align: center;" ></p></strong></span>
+              <fieldset style="padding-top: 5px; text-align:left;padding-left:20px">
+
+                <br>
+
+                <span> <strong> Name : <span id="n" ></span></strong></span>
+                </br>
+                <span> <strong>Age :  <span id="dob"  ></span></strong></span>
+                </br>
+                <span> <strong>Gender : <span id="gender" ></span></strong></span>
+
+                <br>
+              </fieldset>
+            </form>
+          </div>
+
+          <div class="panel-body" ng-show="health_flag">
+            <span> <strong><p style="font-size: 12px;  font-style: italic;  text-align: center;" > Health History </p></strong></span>
+            <fieldset style="padding-top: 10px; text-align:left;padding-left:10px">
+
+
+
+            <!--  <div id="mylist">
+
+              </div>-->
+<div id="mydiv">
+
+</div>
+
+            </fieldset>
+
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <!-- this is dokbot -->
+
+      <div class="pull-right col-md-4" >
+          <aside class="sidebar dokbot-chat-list bg text-small pull-right">
+              <ul class="list-group list-normal" id="messages" scrollable >
+
+                <li class="list-group-item" ng-class="prevClass(messages[$index-1].name, message.name)" ng-repeat="message in messages">
+                  <div class="media">
+                      <span class="pull-left thumb-small">
+                          <img src="img/blue.png" ng-show="message.name=='dokbot'" alt="" width="30" class="dokbot-icon">
+                          <img src="img/green.png" ng-show="message.name=='me'" alt="" width="30" class="dokbot-icon">
+                      </span>
+                      <div class="media-body">
+                          <div class="bot-color dokbot-user-name" ng-bind="message.name" ng-show="message.name=='dokbot'"></div>
+                          <div class="user-color dokbot-user-name" ng-bind="message.name" ng-show="message.name=='me'"></div>
+
+                          <span  class="dokbot-chat-message" ng-bind-html="message.message"></span>
+                      </div>
+                  </div>
+                </li>
+              </ul>
+              <form ng-submit="sendMessage();" class="dokbot-input-form">
+                    <div class="input-group1">
+
+                            <input type="text" autocomplete="off" class="form-control input-sm" ng-readonly="disabled" ng-model="messageText" placeholder="Respond to dokbot here..." style="border-radius:0; width:300px;" />
+                            <span class="input-group-btn" style="display:none;">
+                                <button class="btn btn-warning btn-sm" id="btn-chat" >Send</button>
+                            </span>
+                    </div>
+                </form>
+          </aside>
+        </div>
+    </div>
+</div>
+
+
+</section>

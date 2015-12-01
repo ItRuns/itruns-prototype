@@ -1,0 +1,214 @@
+<style>
+
+  .navbar-center
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    margin: auto;
+	  padding-left: 400px;
+}
+	.btn-size{
+
+	  height: 50px;
+	}
+	.btn-success:active {
+            background-color: #fff;
+    }
+
+  .navbar-inverse .navbar-nav > li > a:hover,
+  .navbar-inverse .navbar-nav > li > a:focus {
+    color: #fff;
+   /* background-color: rgb(81, 81, 81);*/
+    background-color: #ef6d3b;
+   }
+
+.avatar {
+  width: 40px;
+  float: left;
+  margin-right: 5px;
+}
+.avatar > img {
+  width:40px;
+  height:40px;
+  border: 1px solid #F8F8F8;
+}
+.user-mini > span {
+  display: block;
+  font-size: 12px;
+  color:#FFFFFF;
+  margin-bottom: -4px;
+}
+.user-mini > span.welcome {
+  font-weight: bold;
+  margin-top: 2px;
+  width: 150px;
+  font-size: medium;
+}
+#top-panel {
+  line-height: 50px;
+  height: 50px;
+  background: #ebebeb;
+}
+.center{
+  padding-left: 25%;
+}
+#logo {
+  position:relative;
+/*  background: #525252 url(../img/pattern.png) 0 0 repeat;*/
+ // background: #3F2860;
+}
+#logo a {
+  color: #fff;
+  font-family: 'Righteous', cursive;
+  display: block;
+  font-size: 20px;
+  line-height: 50px;
+  /*background: url(../img/logo.png) right 42px no-repeat;*/
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+#logo a:hover {
+  background-position: right 25px;
+  text-decoration: none;
+}
+.navbar {
+  margin: 0;
+  border: 0;
+  position: fixed;
+  top:0;
+  left: 0;
+  width:100%;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  box-shadow: 0 1px 2px #272727;
+  z-index: 2000;
+}
+.navbar-inverse .navbar-nav > li > a {
+  text-shadow: none;
+  color: #ffffff;
+}
+.navbar-inverse {
+     background: #337ab7;
+	 border-color: #337ab7;
+}
+
+</style>
+
+<!--
+<div class="container-fluid navbar-default navbar-inverse" ng-controller="HeaderController">
+  <div class="navbar-header ">
+    <button class="navbar-toggle" type="button" ng-click="toggleCollapsibleMenu()">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a ui-sref="home" class="navbar-brand">dokbot.io</a>
+  </div>
+  <nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
+
+	  <ul class="nav navbar-nav" ng-if="menu.shouldRender(authentication.user);">
+      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}" dropdown="item.type === 'dropdown'">
+        <a ng-switch-when="dropdown" class="dropdown-toggle" dropdown-toggle role="button">{{::item.title}}&nbsp;<span class="caret"></span></a>
+        <ul ng-switch-when="dropdown" class="dropdown-menu">
+          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
+            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
+          </li>
+        </ul>
+        <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right" ng-hide="authentication.user">
+      <li ui-sref-active="active">
+        <a ui-sref="authentication.signup">Sign Up</a>
+      </li>
+      <li class="divider-vertical"></li>
+      <li ui-sref-active="active">
+        <a ui-sref="authentication.signin">Sign In</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right" ng-show="authentication.user">
+      <li class="dropdown" dropdown>
+        <a class="dropdown-toggle user-header-dropdown-toggle" dropdown-toggle role="button">
+          <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />
+          <span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li ui-sref-active="active">
+            <a ui-sref="settings.profile">Edit Profile</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="settings.picture">Change Profile Picture</a>
+          </li>
+          <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
+            <a ui-sref="settings.password">Change Password</a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="settings.accounts">Manage Social Accounts</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="/api/auth/signout" target="_self">Signout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
+-->
+
+
+
+<header ng-controller="InfoController" ><!--class="navbar navbar-inverse"-->
+  <div class="container-fluid" ng-controller="InfoController">
+    <div class="row">
+      <div id="logo" class="col-md-2">
+        <a ui-sref="home"> <img src="img/logo.png" style="width: 250px;"></a>
+      </div>
+      <!--div id="top-panel" class="col-md-10">
+        <div class="row" style="background: #3f2860;">
+
+         <div class="col-md-8 ">
+            <ul class="nav navbar-nav center">
+              <li><a href="dokbot/info">
+                  My Profile</a></li>
+              <li><a href="dokbot/pedigree">My Family</a></li>
+              <li><a href="#">My Risk</a></li>
+              <li><a href="#">My Community</a></li>
+            </ul>
+          </div>
+
+       <!--   <div class="actions col-md-8 ">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn grey-salsa">
+                <input type="radio" name="options" class="toggle" id="option1" href="dokbot/info"> My Profile</label>
+              <label class="btn grey-salsa">
+                <input type="radio" name="options" class="toggle" id="option2">Week</label>
+              <label class="btn grey-salsa">
+                <input type="radio" name="options" class="toggle" id="option2">Month</label>
+            </div>
+          </div>
+-->
+          <!--div class="col-md-4 ">
+            <div class="pull-right">
+
+              <div class="avatar">
+                <img src="img/profile.png" class="" alt="image" />
+              </div>
+              <i class="fa pull-right"></i>
+              <div class="user-mini pull-right">
+                <span class="welcome"> User Name</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div-->
+    </div>
+  </div>
+</header>
