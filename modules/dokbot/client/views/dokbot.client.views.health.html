@@ -1,0 +1,60 @@
+<style>
+.odd {
+  color: blue;
+margin-right:300px;
+
+}
+.even {
+  margin-top:10px;
+  margin-left:300px;
+   margin-right:300px;
+
+}
+.second {
+  margin-top:0px;
+  position:relative;
+  top:170px;
+
+  margin-right:150px;
+
+}
+
+</style>
+<div class="healthMain" ng-controller="HealthController">
+
+  <div class="container" style="margin-left:100px;margin-top:20px;padding-right: 300px;">
+
+	  <div style="margin-left:100px;">
+	  	 <div style="border: 2px solid #337AB7;
+                padding: 5px;
+                width: 250px;
+                margin-top: 25px;
+                padding-right: 10px;
+                text-align: center;
+                font-size: x-large;
+                font-weight: 800;
+                background-color: #A8CBE2;">
+
+
+          <p>Cancer</p>
+		</div>
+		</div>
+
+
+
+   <div style="margin-top:10px;">
+			<h4 style="margin-top:5px; margin-left:170px; font-style: italic;"> Subcategories </h4>
+
+      <div  class="row-content" style="margin-right:500px; margin-left:100px;    padding-top: 20px;font-size: medium;" ng-repeat="(index,data) in datalist | startsWithLetter:messageText as filteredItems">
+
+					<div class="col-sm-12"   ng-bind="data"  ></div>
+
+				</div>
+      </div>
+
+	</div>
+
+
+
+
+</div>

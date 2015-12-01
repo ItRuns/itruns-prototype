@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+	<category>
+		<pattern>MESSAGE1</pattern>
+		<template><think><set name="topic">sessionbegin</set>
+		<set name="view">pedigree</set>
+		</think>
+		</template>
+	</category>
+  <topic name="sessionbegin">
+		<category>
+			<pattern><set>affirmative</set> ^</pattern>
+			<template>Great! So what is your first name? <think><set name="topic">name</set></think>
+			</template>
+		</category>
+		<category>
+			<pattern><set>negative</set> ^</pattern>
+			<template>Ok thanks then!
+			</template>
+		</category>
+  </topic>
+  <category>
+      <pattern>HELLO *</pattern>
+      <template>Hi there! $b I'm dokbot. $b I'll be helping you collect your family health history today. $b Now let's begin. What is your first name?<think><set name="topic">name</set>
+		<set name="view">pedigree</set>
+		</think>
+      </template>
+  </category>
+  <category>
+      <pattern>HI ^</pattern>
+      <template><srai>HELLO</srai>
+      </template>
+  </category>
+  <category>
+      <pattern>HEY ^</pattern>
+      <template><srai>HELLO</srai></template>
+  </category>
+  <category>
+      <pattern>HE WOULD UNDERSTAND</pattern>
+      <template>I believe so</template>
+  </category>
+
+  <category>
+      <pattern>CIAO ^</pattern>
+      <template><srai>HELLO</srai></template>
+  </category>
+  <category>
+      <pattern>HOLA ^</pattern>
+      <template><srai>HELLO</srai></template>
+  </category>
+  <topic name = "name">
+    <category>
+      <pattern>I AM *</pattern>
+      <template>Nice to meet you, <set name="first_name"><star/></set>. What is your last name?
+      <think><set name="topic">lastname</set>
+      <javascript>
+        console.log(req.session);
+        FamilyMembers.update({userId: req.body.userId}, { $set: { first_name: '<star/>', active:true }},{ upsert: true },function(err){
+          if(err) console.log(err);
+        });
+
+        Relative.add(req.body.userId,"father",{first_name:"Father",last_name:"" },function(){
+         Relative.add(req.body.userId,"mother",{first_name:"Mother",last_name:"" },function(){})
+        })
+
+                
+      </javascript></think>
+      </template>
+    </category>
+    <category>
+      <pattern>MY NAME IS *</pattern>
+      <template><srai>I AM <star/></srai></template>
+    </category>
+	<category>
+        <pattern>MY FIRST NAME IS *</pattern>
+        <template><srai>MY NAME IS <star/></srai></template>
+    </category>
+    <category>
+        <pattern>IT IS *</pattern>
+        <template><srai>MY NAME IS <star/></srai></template>
+    </category>
+    <category>
+      <pattern>*</pattern>
+      <template><srai>I AM <star/></srai></template>
+    </category>
+    </topic>
+    <topic name = "lastname">
+    <category>
+      <pattern>IT IS *</pattern>
+      <template>Thank you. Are you a male or a female?
+      <think><set name="topic">gender</set><set name="last_name"><star/></set>
+        <javascript>
+            FamilyMembers.update({userId: req.body.userId}, { $set: { last_name: '<star/>' }},{ upsert: true },function(err){
+              if(err) console.log(err);
+            });
+        </javascript></think>
+      </template>
+    </category>
+    <category>
+      <pattern>MY LAST NAME IS *</pattern>
+      <template><srai>IT IS <star/></srai></template>
+    </category>
+    <category>
+      <pattern>*</pattern>
+       <template><srai>IT IS <star/></srai></template>
+    </category>
+    </topic>
+    <topic name="gender">
+        <category>
+            <pattern>MALE ^</pattern>
+            <template>Thank you. How old are you?
+            <think><set name="gender">m</set></think>
+            <think><set name="topic">dob</set>
+                <javascript>
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { gender: 'male' }},{ upsert: true },function(err){
+                      if(err) console.log(err);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+        <category>
+            <pattern>FEMALE ^</pattern>
+            <template>Thank you. How old are you?
+            <think><set name="gender">f</set></think>
+            <think><set name="topic">dob</set>
+                <javascript>
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { gender: 'female' }},{ upsert: true },function(err){
+                      if(err) console.log(err);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="dob">
+        <category>
+            <pattern><set>number</set></pattern>
+            <template>That's great. $b Now let's build your family pedigree. $b How many brothers do you have?
+            <think><set name="topic">brothers</set>
+                <javascript>
+					var yr = new Date().getFullYear() - parseInt('<star/>');
+					console.log(yr,'<star/>');
+                    var dob = '1/1/' + yr;
+					console.log(dob);
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { dob: dob }},{ upsert: true },function(err,result){
+                      if(err) console.log(err);
+					  console.log("done",result);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+        <category>
+            <pattern>I AM <set>number</set> YEARS OLD</pattern>
+            <template>
+				<srai><star index="1"/></srai>
+            </template>
+        </category>
+		<category>
+            <pattern>^ <set>number</set> ^</pattern>
+            <template>
+				<srai><star index="2"/></srai>
+            </template>
+        </category>
+        <category>
+            <pattern><set>number</set>-<set>number</set>-<set>number</set></pattern>
+            <template>That's great. $b Now let's build your family pedigree. How many brothers do you have?
+            <think><set name="topic">brothers</set>
+                <javascript>
+                    var dob = '<star/>/<star index="2"/>/<star index="3"/>'
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { dob: dob }},{ upsert: true },function(err){
+                      if(err) console.log(err);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+        <category>
+            <pattern><set>month</set> ^ <set>number</set></pattern>
+            <template>That's great. $b Now let's build your family pedigree. How many brothers do you have?
+            <think><set name="topic">brothers</set>
+                <javascript>
+                    var dob = '<map name="month"><star/></map>/<map name="days"><star index="2"/></map>/<star index="3"/>'
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { dob: dob }},{ upsert: true },function(err){
+                      if(err) console.log(err);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>        
+        <category>
+            <pattern><set>number</set> ^ <set>number</set> ^ <set>number</set></pattern>
+            <template>That's great. $b Now let's build your family pedigree. How many brothers do you have?
+            <think><set name="topic">brothers</set>
+                <javascript>
+                    var dob = '<star/>/<star index="3"/>/<star index="5"/>'
+                    FamilyMembers.update({userId: req.body.userId}, { $set: { dob: dob }},{ upsert: true },function(err){
+                      if(err) console.log(err);
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="brothers">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>Ok. And how many sisters do you have?
+            <think><set name="numbro"><star/></set></think>
+            <think><set name="topic">sisters</set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Brother",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="sisters">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>Now let's talk about your mother's side of the family. $b How many brothers does your mother have?
+            <think><set name="numsis"><star/></set></think>
+            <think><set name="topic">maternaluncles</set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Sister",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+	<topic name="maternaluncles">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>And how many sisters does your mother have?
+            <think><set name="nummatunc"><star/></set></think>
+            <think><set name="topic">maternalaunts</set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Maternal Uncle",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="maternalaunts">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>Moving on to your father's side. $b How many brothers does your father have?
+            <think><set name="topic">paternaluncles</set></think>
+            <think><set name="nummataunt"><star/></set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Maternal Aunt",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="paternaluncles">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>How many sisters does your father have? 
+            <think><set name="numpatunc"><star/></set></think>
+            <think><set name="topic">paternalaunts</set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Paternal Uncle",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="paternalaunts">
+        <category>
+            <pattern><set>number</set> ^</pattern>
+            <template>Thanks. $b Now let's find out about your disease history. $b Have you ever been diagnosed with a disease or a condition?
+            <think><set name="numpataunt"><star/></set></think>
+            <think><set name="topic">disease</set>
+                <javascript>
+                    Relative.addBulk(req.body.userId,"Paternal Aunt",<star/>);
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="disease">
+        <category>
+            <pattern><set>affirmative</set> ^</pattern>
+            <template>Please name the disease with which you were diagnosed with? $b In case of multiple conditions please mention one disease at a time.
+            <think><set name="topic">diseasename</set><set name="view">disease</set>
+                <javascript>
+                    ClinicalObservations.collection.insert({userId: req.body.userId,disease_hl7Code:0 ,ageLow:0,ageHigh:0,unit:'year', isDeseased:false } , function(err,result){
+                        req.session.bot.data['obid'] = result.insertedIds[0]+"";
+                        req.session.save();
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+        <category>
+            <pattern><set>negative</set> ^</pattern>
+            <template>That's great. Thanks! Bye Bye!!</template>
+        </category>
+    </topic>
+    <topic name="diseasename">
+        <category>
+            <pattern>*</pattern>
+            <template>At what age was the diagnosis made? Please specify a range of years.
+            <think><set name="topic">diagnosisage</set>
+                <javascript>
+                    var disease_name = '<star/>';
+                    var obid = req.session.bot.data.obid;
+                    ClinicalObservations.findById(obid,function(err,doc){
+                        if(err) console.log(err);
+                        else
+                        Disease.findOne({displayName:{ $regex: new RegExp("^" + disease_name.toLowerCase(), "i") }},function(err,disease){
+                            if(err) console.log(err);
+							if(disease)
+							{
+								doc.disease_hl7Code = disease.hl7Code;
+								doc.save();
+							}
+                        });
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+    <topic name="diagnosisage">
+        <category>
+            <pattern>*</pattern>
+            <template>Have you been diagnosed with any other disease?
+            <think><set name="topic">disease</set>
+                <javascript>
+                    var age = '<star/>';
+                    var obid = req.session.bot.data.obid;
+                    ClinicalObservations.findById(obid,function(err,doc){
+                        doc.ageLow = age;
+                        doc.ageHigh = age;
+                        doc.unit = 'year';
+                        doc.save();
+                    });
+                </javascript>
+            </think>
+            </template>
+        </category>
+    </topic>
+	<category>
+      <pattern>I WANT TO CHANGE AN ENTRY</pattern>
+      <template>Which entry do you want to change?
+          <think><set name="prevtopic"><get name="topic"/></set><set name="topic">changecat</set></think>
+      </template>
+    </category>
+    <topic name="changecat">
+        <category>
+            <pattern><set>categories</set></pattern>
+            <template>Ok then. Let me ask you again.<think><set name="cats"><star/></set></think>
+                <condition name="cats">
+                    <li value="name">What is your first name?<think><set name="topic">textchange</set><set name="type">fname</set></think></li>
+                    <li value="FIRST NAME">What is your first name?<think><set name="topic">textchange</set><set name="type">fname</set></think></li>
+                    <li value="last name">What is your last name?<think><set name="topic">textchange</set><set name="type">lname</set></think></li>
+                    <li value="date of birth">What is your date of birth? Please enter month first followed by date and year.<think><set name="topic">dobchange</set></think></li>
+                    <li value="number of brothers">How many brothers do you have?<think><set name="topic">numchange</set><set name="type">brot</set></think></li>
+                    <li value="number of sisters">How many sisters do you have?<think><set name="topic">numchange</set><set name="type">sist</set></think></li>
+                    <li value="number of paternal uncles">How many paternal uncles do you have?<think><set name="topic">numchange</set><set name="type">punc</set></think></li>
+                    <li value="number of paternal aunts">How many paternal aunts do you have?<think><set name="topic">numchange</set><set name="type">paunt</set></think></li>
+                    <li value="number of maternal uncles">How many maternal uncles do you have?<think><set name="topic">numchange</set><set name="type">munc</set></think></li>
+                    <li value="number of maternal aunts">How many maternal aunts do you have?<think><set name="topic">numchange</set><set name="type">maunt</set></think></li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+    <topic name="textchange">
+        <category>
+            <pattern>*</pattern>
+            <template>
+                <condition name="type">
+                    <li value="fname">Your new first name is <star/><think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="lname">Your new last name is <star/><think><set name="topic"><get name="prevtopic"/></set></think></li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+     <topic name="numchange">
+        <category>
+            <pattern><set>number</set></pattern>
+            <template>
+                <condition name="type">
+                    <li value="brot">You have <star/> brothers.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="sist">You have <star/> sisters.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="punc">You have <star/> paternal uncles.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="paunt">You have <star/> paternal aunts.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="munc">You have <star/> maternal uncles.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                    <li value="maunt">You have <star/> maternal aunts.<think><set name="topic"><get name="prevtopic"/></set></think></li>
+                </condition>
+            </template>
+        </category>
+    </topic>
+    <topic name="dobchange">
+        <category>
+            <pattern><set>month</set> <set>numberth</set> <set>number</set></pattern>
+            <template>Your Date of birth is <map name="month"><star/></map>/<map name="days"><star index="2"/></map>/<star index="3"/>.
+            <think><set name="topic"><get name="prevtopic"/></set></think>
+            </template>
+        </category>
+        <category>
+            <pattern><set>month</set> <set>datenumber</set> <set>number</set></pattern>
+            <template>Your Date of birth is <map name="month"><star/></map>/<star index="2"/>/<star index="3"/>. 
+            <think><set name="topic"><get name="prevtopic"/></set></think>
+            </template>
+        </category>
+        <category>
+            <pattern><set>monthnumber</set> ^ <set>datenumber</set> ^ <set>number</set></pattern>
+            <template>Your Date of birth is <star/>/<star index="3"/>/<star index="5"/>.
+            <think><set name="topic"><get name="prevtopic"/></set></think>
+            </template>
+        </category>
+        <category>
+            <pattern>*</pattern>
+            <template>You have entered an invalid date. Please enter your date of birth again in this example format (May 6 1975)</template>
+        </category>
+    </topic>
+    <category>
+        <pattern>*</pattern>
+        <template>I cannot understand this response. Please try again.</template>
+    </category>
+</aiml>

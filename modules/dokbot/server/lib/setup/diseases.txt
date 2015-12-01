@@ -1,0 +1,22 @@
+none,0
+disease,1
+diabetes,2 
+disorder,3
+cancer,4
+hypertension,5
+brain attack,6 
+hepatitis,7
+kidney failure,8
+heart disease,9
+liver disease,10 
+ulcer disease,11
+clotting disorder,12
+skin diseases,13
+stomach diseases,14
+eye diseases,15
+voice disorders,16
+genetic disorders,17
+neurological disorders,18
+mental illness,19
+intestinal diseases,20
+malaria,21

@@ -1,0 +1,51 @@
+
+    body {
+        background-color: #F1F1F1;
+        /*background: url(http://s18.postimg.org/l7yq0ir3t/pick8_1.jpg);*/
+        
+    }
+    .form-signin input[type="text"] {
+        margin-bottom: 5px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+  
+    .form-signin .form-control {
+        position: relative;
+        font-size: 16px;
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+        height: auto;
+        padding: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .vertical-offset-100 {
+        padding-top: 100px;
+    }
+    .img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+    }
+    .panel {
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    }
+	.prop{
+	    position: fixed;
+		right: 300px;
+		width: 300px;
+		text-align: center;
+		padding-right: 0;
+	}
+	#propertiesPanel{
+	    padding-bottom: 0;
+		height: 100vh !important;
+		margin-bottom: 0;
+	}
