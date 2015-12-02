@@ -61,7 +61,11 @@ lineReader.eachLine('./modules/dokbot/server/lib/setup/cancer.txt','rs+', functi
                  
 			}
 });
+<<<<<<< HEAD
 //relationships to be inserted into database
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
 var relationships = [
     {displayName:"Father",hl7Code:"1"},
     {displayName:"Mother",hl7Code:"2"},
@@ -102,7 +106,11 @@ var aimlParser = function(){
             }
         }
     };
+<<<<<<< HEAD
     //load all aiml files
+=======
+    
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     this.loadFiles = function(cb){
         
         fs.readdir(aimlDir, function(err, files) {
@@ -174,7 +182,10 @@ var aimlParser = function(){
             });
             
         });
+<<<<<<< HEAD
         //load bot properties
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
         fs.readFile(system+"/bot.properties", 'utf8', function (err,data) {
             if (err) {
                 return console.log(err);
@@ -212,8 +223,11 @@ exports.bot = function (req, res) {
    if(!req.session.bot.data.hasOwnProperty("topic") || typeof req.session.bot.data.topic === undefined) req.session.bot.data.topic = "";
    if(!req.session.bot.hasOwnProperty("wildCardArray") || typeof req.session.bot.wildCardArray === undefined) req.session.bot.wildCardArray = [];
    if(!req.session.bot.hasOwnProperty("thatArray") || typeof req.session.bot.thatArray === undefined) req.session.bot.thatArray = [];
+<<<<<<< HEAD
    
    //parse all pattern tags
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var resolvePatternNodes = function(innerNodes){
         var pattern = "";
         var patternReg = "";
@@ -237,7 +251,10 @@ exports.bot = function (req, res) {
         return [pattern,patternReg];
     };
     
+<<<<<<< HEAD
     //convert string to normal form, substitute string
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var normalize = function(string){
         //var text = "";
         if(string.charAt(0) !== " ") string = " " + string;
@@ -249,7 +266,10 @@ exports.bot = function (req, res) {
         }
         return string;
     };
+<<<<<<< HEAD
     //find pattern based on user input
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var findMatchingPattern = function(input, categoryNodes){
         var found = false;
         input = input.toUpperCase();
@@ -281,6 +301,10 @@ exports.bot = function (req, res) {
                             found = true;
                         }
                     }else{
+<<<<<<< HEAD
+=======
+                        //req.session.bot.wildCardArray = getWildCardValue(input,categoryNodes[i].children[0].text);
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
                         found = true;
                     }
                     break;
@@ -290,9 +314,13 @@ exports.bot = function (req, res) {
 
         return found;
     };
+<<<<<<< HEAD
 	
 
     //check if a category has a <that> tag
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var hasThat = function(categoryNodes){
         for(var i = 0; i < categoryNodes.length; i++){
             if(categoryNodes[i].name === 'that'){
@@ -301,7 +329,11 @@ exports.bot = function (req, res) {
         }
         return false;
     };
+<<<<<<< HEAD
     //parse <template> tags
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var resolveTemplateNodes = function(childNodes){
         //resove all nodes inside a template node <bot> <get> <set> etc...
         var text = "";
@@ -394,7 +426,11 @@ exports.bot = function (req, res) {
         }
         return text;
     };
+<<<<<<< HEAD
     //substitutions such as person,person2,gender to be replaced in a string with the appropriate text
+=======
+ 
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var readSubstitution = function(name, childNodes){
         var text = "";
         var t = resolveTemplateNodes(childNodes);
@@ -412,8 +448,11 @@ exports.bot = function (req, res) {
         else
             return t;
     };
+<<<<<<< HEAD
     
     //search for specific <pattern> and return bot response
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var findTemplateByPattern = function(input,callback){
         input = normalize(input);
         for(var domIndex = 0; domIndex < domArray.length; domIndex++){
@@ -442,7 +481,11 @@ exports.bot = function (req, res) {
         }
     };
 
+<<<<<<< HEAD
    //converts aiml wildcards to regular expressions
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var convertWildcardToRegex = function(text){
         var firstCharacter = text.charAt(0);
         //add a space before and after the pattern text (THIS IS LATER ALSO DONE FOR THE USER INPUT)
@@ -470,7 +513,11 @@ exports.bot = function (req, res) {
         }*/
         return text.toLowerCase();
     };
+<<<<<<< HEAD
     //extracts wildcard values from input
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
     var getWildCardValue = function(userInput, patternText){
         
         //get all strings of the pattern that are divided by a *
@@ -552,7 +599,11 @@ exports.bot = function (req, res) {
         res.json(data);
     });
 };
+<<<<<<< HEAD
 // returns array to populate pedigree from database
+=======
+
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
 exports.pedigree = function(req,res){
     var userId = req.body.userId;
     var api = function(r){
@@ -606,8 +657,11 @@ exports.pedigree = function(req,res){
 
 
 };
+<<<<<<< HEAD
 
 //returns personal info from database
+=======
+>>>>>>> 03c735a0ac8b0648f1da3ff817a13e01b6e748e7
 exports.info = function (req, res) {
     var userId = req.body.userId;
     FamilyMembers.findOne({userId:userId},function(err,member){
