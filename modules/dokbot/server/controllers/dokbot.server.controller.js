@@ -61,7 +61,7 @@ lineReader.eachLine('./modules/dokbot/server/lib/setup/cancer.txt','rs+', functi
                  
 			}
 });
-
+//relationships to be inserted into database
 var relationships = [
     {displayName:"Father",hl7Code:"1"},
     {displayName:"Mother",hl7Code:"2"},
@@ -102,7 +102,7 @@ var aimlParser = function(){
             }
         }
     };
-    
+    //load all aiml files
     this.loadFiles = function(cb){
         
         fs.readdir(aimlDir, function(err, files) {
@@ -174,6 +174,7 @@ var aimlParser = function(){
             });
             
         });
+        //load bot properties
         fs.readFile(system+"/bot.properties", 'utf8', function (err,data) {
             if (err) {
                 return console.log(err);
@@ -211,6 +212,8 @@ exports.bot = function (req, res) {
    if(!req.session.bot.data.hasOwnProperty("topic") || typeof req.session.bot.data.topic === undefined) req.session.bot.data.topic = "";
    if(!req.session.bot.hasOwnProperty("wildCardArray") || typeof req.session.bot.wildCardArray === undefined) req.session.bot.wildCardArray = [];
    if(!req.session.bot.hasOwnProperty("thatArray") || typeof req.session.bot.thatArray === undefined) req.session.bot.thatArray = [];
+   
+   //parse all pattern tags
     var resolvePatternNodes = function(innerNodes){
         var pattern = "";
         var patternReg = "";
@@ -234,6 +237,7 @@ exports.bot = function (req, res) {
         return [pattern,patternReg];
     };
     
+    //convert string to normal form, substitute string
     var normalize = function(string){
         //var text = "";
         if(string.charAt(0) !== " ") string = " " + string;
@@ -245,6 +249,7 @@ exports.bot = function (req, res) {
         }
         return string;
     };
+    //find pattern based on user input
     var findMatchingPattern = function(input, categoryNodes){
         var found = false;
         input = input.toUpperCase();
@@ -276,7 +281,6 @@ exports.bot = function (req, res) {
                             found = true;
                         }
                     }else{
-                        //req.session.bot.wildCardArray = getWildCardValue(input,categoryNodes[i].children[0].text);
                         found = true;
                     }
                     break;
@@ -286,7 +290,9 @@ exports.bot = function (req, res) {
 
         return found;
     };
+	
 
+    //check if a category has a <that> tag
     var hasThat = function(categoryNodes){
         for(var i = 0; i < categoryNodes.length; i++){
             if(categoryNodes[i].name === 'that'){
@@ -295,7 +301,7 @@ exports.bot = function (req, res) {
         }
         return false;
     };
-
+    //parse <template> tags
     var resolveTemplateNodes = function(childNodes){
         //resove all nodes inside a template node <bot> <get> <set> etc...
         var text = "";
@@ -388,7 +394,7 @@ exports.bot = function (req, res) {
         }
         return text;
     };
- 
+    //substitutions such as person,person2,gender to be replaced in a string with the appropriate text
     var readSubstitution = function(name, childNodes){
         var text = "";
         var t = resolveTemplateNodes(childNodes);
@@ -406,6 +412,8 @@ exports.bot = function (req, res) {
         else
             return t;
     };
+    
+    //search for specific <pattern> and return bot response
     var findTemplateByPattern = function(input,callback){
         input = normalize(input);
         for(var domIndex = 0; domIndex < domArray.length; domIndex++){
@@ -434,7 +442,7 @@ exports.bot = function (req, res) {
         }
     };
 
-
+   //converts aiml wildcards to regular expressions
     var convertWildcardToRegex = function(text){
         var firstCharacter = text.charAt(0);
         //add a space before and after the pattern text (THIS IS LATER ALSO DONE FOR THE USER INPUT)
@@ -462,7 +470,7 @@ exports.bot = function (req, res) {
         }*/
         return text.toLowerCase();
     };
-
+    //extracts wildcard values from input
     var getWildCardValue = function(userInput, patternText){
         
         //get all strings of the pattern that are divided by a *
@@ -544,7 +552,7 @@ exports.bot = function (req, res) {
         res.json(data);
     });
 };
-
+// returns array to populate pedigree from database
 exports.pedigree = function(req,res){
     var userId = req.body.userId;
     var api = function(r){
@@ -598,6 +606,8 @@ exports.pedigree = function(req,res){
 
 
 };
+
+//returns personal info from database
 exports.info = function (req, res) {
     var userId = req.body.userId;
     FamilyMembers.findOne({userId:userId},function(err,member){
